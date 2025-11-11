@@ -1,0 +1,39 @@
+1. What is the difference between “call by value” and “call by reference”? Which one is used in your program?
+👉 Call by value passes a copy of data, call by reference passes the address (so changes affect the original).
+In your program, arrays (s[]) are passed by reference, but integers like n are passed by value.
+
+2. What happens in memory when we declare struct student s[20];?
+👉 The compiler allocates a contiguous memory block large enough for 20 student structures.
+Each structure contains fields stored sequentially — name[20], roll_no, and marks.
+
+3. How does the compiler determine the size of a structure?
+👉 It adds the sizes of all members plus any padding bytes needed for alignment.
+You can check it using sizeof(struct student).
+
+4. Why do we use return -1; in search() to indicate “not found”?
+👉 Because valid array indexes start at 0. Using -1 makes it easy to identify a failure without confusing it with a valid position.
+
+5. What’s the difference between passing an array and passing a pointer to a function?
+👉 Technically, they are the same — the array name decays to a pointer to its first element when passed.
+But the function doesn’t know the array size; you must pass n separately.
+
+6. How does C store and access string data like char name[20];?
+👉 Strings are stored as arrays of characters ending with a null terminator '\0'.
+When using %s in scanf or printf, C keeps reading or printing until it hits '\0'.
+
+7. What is the purpose of using functions like create(), display(), etc., instead of writing everything in main()?
+👉 It improves modularity, reusability, and readability.
+Each function handles a single task, following the concept of structured programming.
+
+8. What is the difference between structure and array? Can we have an array of structures?
+👉 An array stores multiple values of the same type.
+A structure stores multiple values of different types under one name.
+Yes — struct student s[20]; is an array of structures.
+
+9. Explain the difference between static and dynamic memory allocation.
+👉 Static allocation (like struct student s[20];) reserves memory at compile time.
+Dynamic allocation (using malloc() or calloc()) reserves memory at runtime, allowing flexible resizing.
+
+10. What is the importance of using void as a function return type?
+👉 It means the function doesn’t return a value to the caller.
+Functions like create() or display() perform actions (side effects) rather than produce a result.

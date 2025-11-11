@@ -1,0 +1,29 @@
+Q: Explain how this array-based queue implements FIFO. What do front and rear represent?
+A: FIFO is maintained by inserting at rear and removing from front. front is index of current first element; rear is index of last inserted element. On enqueue rear++ and place value; on dequeue front++.
+
+Q: Under what exact conditions does this implementation report overflow and underflow?
+A: Overflow when rear == SIZE - 1 (no room at end). Underflow when front == -1 or front > rear (no elements present).
+
+Q: Describe a practical correctness bug that appears after several enqueues and dequeues (wasted space). Why does it happen?
+A: After dequeuing, front moves forward leaving unused slots at low indexes. Even if there’s free space at beginning, enqueue blocks when rear reaches SIZE-1. This wastes capacity because the queue is not circular.
+
+Q: How would you convert this into a circular queue? Give the key index formulas.
+A: Use modulo arithmetic: enqueue: rear = (rear + 1) % SIZE; queue[rear] = x; dequeue: front = (front + 1) % SIZE;. Use a condition like (rear + 1) % SIZE == front for full and front == -1 (or front == rear + 1 depending on convention) for empty. Alternatively maintain count to disambiguate full/empty.
+
+Q: Time complexity of addParcel, deleteParcel, and displayQueue?
+A: addParcel O(1), deleteParcel O(1), displayQueue O(n) in the number of elements printed.
+
+Q: How can you reliably detect empty vs full in a circular queue without ambiguity?
+A: Keep a count variable updated on enqueue/dequeue; empty if count == 0, full if count == SIZE. Or reserve one slot and use (rear + 1) % SIZE == front as full, front == -1 or front == rear + 1 as empty (conventions vary).
+
+Q: Suggest two defensive improvements to the current program (input robustness / pointer resets).
+A: (1) Validate scanf return values to avoid using uninitialized input. (2) When queue becomes empty after a dequeue (i.e., front > rear), reset front = rear = -1 to maintain consistent empty-state and simplify checks.
+
+Q: How would you implement the same queue with a linked list? State advantages over the array version.
+A: Maintain front and rear pointers to nodes; enqueue: link new node at rear->next, update rear; dequeue: remove front. Advantages: dynamic size (no fixed limit), no wasted slots after dequeues, O(1) enqueue/dequeue without modulo arithmetic.
+
+Q: If multiple threads access this queue concurrently, what problems arise and how to fix them?
+A: Race conditions (simultaneous enqueue/dequeue can corrupt front/rear or the array). Fix with synchronization: mutex locks around critical sections, or use a lock-free concurrent queue algorithm or atomic operations.
+
+Q: Memory layout: what is the space usage of this queue and how could you make it more memory-efficient when many fewer elements than SIZE are used?
+A: Space usage = SIZE * sizeof(int) plus globals. For variable needs, use dynamic allocation: allocate with malloc(n * sizeof(int)) based on user input and realloc() to grow/shrink, or use a linked list to allocate nodes on demand.
